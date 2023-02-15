@@ -3172,6 +3172,12 @@ ripcSessInit rwsValidateWebSocketRequest(RsslSocketChannel *rsslSocketChannel, c
 		}
 		rsslSocketChannel->protocolType = (RsslUInt8)wsSess->protocol;
 
+		/* Only support WebSocket compression when using the JSON2 protocol */
+		/* Compression negotiation occurs in RIPC connection for RWF protocol */
+		if (wsSess->protocol != RWS_SP_JSON2) {
+			wsSess->deflate = 0;
+		}
+
 		return (rwsAcceptWebSocket(rsslSocketChannel, error));
 	}
 }
